@@ -1,0 +1,1329 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TFN-ADVANCED™ — Técnica de Augmentación</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow:wght@300;400;500;600;700&family=Barlow+Condensed:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --blue-primary: #0057A8;
+    --blue-dark: #003D7A;
+    --blue-light: #E8F0FA;
+    --blue-mid: #4A90D9;
+    --red-warning: #C8102E;
+    --red-light: #FDECEA;
+    --orange-caution: #E87722;
+    --orange-light: #FEF3E8;
+    --green-ok: #00833E;
+    --green-light: #E6F4ED;
+    --grey-dark: #2C2C2C;
+    --grey-mid: #5A5A5A;
+    --grey-light: #F0F2F5;
+    --grey-border: #D0D5DD;
+    --white: #FFFFFF;
+    --font-main: 'Barlow', sans-serif;
+    --font-display: 'Barlow Condensed', sans-serif;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: var(--font-main);
+    background: var(--grey-light);
+    color: var(--grey-dark);
+    min-height: 100vh;
+  }
+
+  /* HEADER */
+  .header {
+    background: var(--blue-dark);
+    color: white;
+    padding: 0;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.25);
+  }
+
+  .header-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 32px;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  .header-brand {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .header-brand .system {
+    font-family: var(--font-display);
+    font-size: 11px;
+    font-weight: 400;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--blue-mid);
+    margin-bottom: 2px;
+  }
+
+  .header-brand .title {
+    font-family: var(--font-display);
+    font-size: 20px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    color: white;
+  }
+
+  .progress-bar-container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 6px;
+  }
+
+  .progress-label {
+    font-size: 11px;
+    color: var(--blue-mid);
+    font-weight: 500;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+
+  .progress-track {
+    width: 200px;
+    height: 6px;
+    background: rgba(255,255,255,0.2);
+    border-radius: 3px;
+    overflow: hidden;
+  }
+
+  .progress-fill {
+    height: 100%;
+    background: var(--blue-mid);
+    border-radius: 3px;
+    transition: width 0.5s ease;
+  }
+
+  /* INTRO SCREEN */
+  .intro-screen {
+    max-width: 800px;
+    margin: 60px auto;
+    padding: 0 24px;
+    text-align: center;
+  }
+
+  .intro-badge {
+    display: inline-block;
+    background: var(--blue-primary);
+    color: white;
+    font-family: var(--font-display);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 6px 16px;
+    border-radius: 2px;
+    margin-bottom: 24px;
+  }
+
+  .intro-title {
+    font-family: var(--font-display);
+    font-size: 48px;
+    font-weight: 700;
+    color: var(--blue-dark);
+    line-height: 1.1;
+    margin-bottom: 16px;
+  }
+
+  .intro-subtitle {
+    font-size: 18px;
+    color: var(--grey-mid);
+    font-weight: 300;
+    margin-bottom: 40px;
+    line-height: 1.6;
+  }
+
+  .intro-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin-bottom: 40px;
+  }
+
+  .intro-stat {
+    background: white;
+    border: 1px solid var(--grey-border);
+    border-top: 3px solid var(--blue-primary);
+    padding: 20px;
+    border-radius: 4px;
+  }
+
+  .intro-stat .number {
+    font-family: var(--font-display);
+    font-size: 36px;
+    font-weight: 700;
+    color: var(--blue-primary);
+    display: block;
+  }
+
+  .intro-stat .label {
+    font-size: 12px;
+    color: var(--grey-mid);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: 500;
+  }
+
+  .btn-start {
+    background: var(--blue-primary);
+    color: white;
+    border: none;
+    font-family: var(--font-display);
+    font-size: 16px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    padding: 16px 48px;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: all 0.2s;
+    box-shadow: 0 4px 16px rgba(0,87,168,0.3);
+  }
+
+  .btn-start:hover {
+    background: var(--blue-dark);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0,87,168,0.4);
+  }
+
+  /* STEP NAV */
+  .step-nav {
+    background: white;
+    border-bottom: 1px solid var(--grey-border);
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+
+  .step-nav::-webkit-scrollbar { display: none; }
+
+  .step-nav-inner {
+    display: flex;
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 32px;
+  }
+
+  .step-pill {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 14px 16px;
+    cursor: pointer;
+    border-bottom: 3px solid transparent;
+    transition: all 0.2s;
+    white-space: nowrap;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--grey-mid);
+    flex-shrink: 0;
+  }
+
+  .step-pill:hover {
+    color: var(--blue-primary);
+    background: var(--blue-light);
+  }
+
+  .step-pill.active {
+    color: var(--blue-primary);
+    border-bottom-color: var(--blue-primary);
+    font-weight: 600;
+  }
+
+  .step-pill.completed {
+    color: var(--green-ok);
+  }
+
+  .step-pill .pill-num {
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: var(--grey-light);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    font-weight: 700;
+    font-family: var(--font-display);
+    flex-shrink: 0;
+    transition: all 0.2s;
+  }
+
+  .step-pill.active .pill-num {
+    background: var(--blue-primary);
+    color: white;
+  }
+
+  .step-pill.completed .pill-num {
+    background: var(--green-ok);
+    color: white;
+  }
+
+  /* MAIN CONTENT */
+  .main {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 32px 32px 80px;
+  }
+
+  /* STEP CARD */
+  .step-card {
+    background: white;
+    border-radius: 6px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+    overflow: hidden;
+    animation: fadeIn 0.4s ease;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .step-header {
+    background: var(--blue-primary);
+    padding: 24px 32px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+
+  .step-number {
+    font-family: var(--font-display);
+    font-size: 56px;
+    font-weight: 700;
+    color: rgba(255,255,255,0.2);
+    line-height: 1;
+    min-width: 60px;
+  }
+
+  .step-title-block .step-label {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.6);
+    margin-bottom: 4px;
+  }
+
+  .step-title-block .step-name {
+    font-family: var(--font-display);
+    font-size: 26px;
+    font-weight: 700;
+    color: white;
+    line-height: 1.2;
+  }
+
+  .step-body {
+    padding: 32px;
+    display: grid;
+    grid-template-columns: 1fr 320px;
+    gap: 32px;
+  }
+
+  .step-body.no-sidebar {
+    grid-template-columns: 1fr;
+  }
+
+  /* DESCRIPTION */
+  .step-description {
+    font-size: 15px;
+    line-height: 1.8;
+    color: var(--grey-dark);
+    margin-bottom: 24px;
+  }
+
+  /* INSTRUMENTS */
+  .instruments-card {
+    background: var(--blue-light);
+    border: 1px solid #C5D9F0;
+    border-left: 4px solid var(--blue-primary);
+    border-radius: 4px;
+    padding: 16px 20px;
+    margin-bottom: 20px;
+  }
+
+  .instruments-card .card-label {
+    font-family: var(--font-display);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--blue-primary);
+    margin-bottom: 10px;
+  }
+
+  .instrument-item {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    padding: 8px 0;
+    border-top: 1px solid #C5D9F0;
+    font-size: 13px;
+  }
+
+  .instrument-item:first-of-type { border-top: none; }
+
+  .instrument-ref {
+    font-family: var(--font-display);
+    font-weight: 700;
+    color: var(--blue-primary);
+    min-width: 90px;
+    font-size: 12px;
+  }
+
+  .instrument-name {
+    color: var(--grey-dark);
+    line-height: 1.4;
+  }
+
+  /* KEY DATA */
+  .key-data-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+
+  .key-data-item {
+    background: var(--blue-dark);
+    color: white;
+    padding: 16px 12px;
+    border-radius: 4px;
+    text-align: center;
+  }
+
+  .key-data-item .kd-value {
+    font-family: var(--font-display);
+    font-size: 28px;
+    font-weight: 700;
+    display: block;
+    color: #7BB8F0;
+  }
+
+  .key-data-item .kd-unit {
+    font-family: var(--font-display);
+    font-size: 14px;
+    font-weight: 600;
+    color: rgba(255,255,255,0.7);
+  }
+
+  .key-data-item .kd-label {
+    font-size: 10px;
+    color: rgba(255,255,255,0.55);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-top: 4px;
+    display: block;
+  }
+
+  /* WARNINGS */
+  .alert-card {
+    border-radius: 4px;
+    padding: 14px 18px;
+    margin-bottom: 12px;
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+  }
+
+  .alert-card.warning {
+    background: var(--red-light);
+    border: 1px solid #F0B8C0;
+    border-left: 4px solid var(--red-warning);
+  }
+
+  .alert-card.caution {
+    background: var(--orange-light);
+    border: 1px solid #F5D0A9;
+    border-left: 4px solid var(--orange-caution);
+  }
+
+  .alert-card.note {
+    background: var(--blue-light);
+    border: 1px solid #C5D9F0;
+    border-left: 4px solid var(--blue-mid);
+  }
+
+  .alert-icon {
+    font-size: 18px;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+
+  .alert-content .alert-title {
+    font-family: var(--font-display);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+
+  .alert-card.warning .alert-title { color: var(--red-warning); }
+  .alert-card.caution .alert-title { color: var(--orange-caution); }
+  .alert-card.note .alert-title { color: var(--blue-primary); }
+
+  .alert-content p {
+    font-size: 13px;
+    line-height: 1.6;
+    color: var(--grey-dark);
+  }
+
+  /* CHECKLIST */
+  .checklist-section {
+    background: var(--grey-light);
+    border-radius: 4px;
+    padding: 20px;
+    position: sticky;
+    top: 80px;
+  }
+
+  .checklist-title {
+    font-family: var(--font-display);
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--blue-primary);
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .check-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--grey-border);
+    cursor: pointer;
+    transition: opacity 0.2s;
+  }
+
+  .check-item:last-child { border-bottom: none; }
+
+  .check-item:hover { opacity: 0.8; }
+
+  .check-box {
+    width: 18px;
+    height: 18px;
+    border: 2px solid var(--grey-border);
+    border-radius: 3px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+    margin-top: 1px;
+  }
+
+  .check-item.checked .check-box {
+    background: var(--green-ok);
+    border-color: var(--green-ok);
+  }
+
+  .check-item.checked .check-box::after {
+    content: '✓';
+    color: white;
+    font-size: 11px;
+    font-weight: 700;
+  }
+
+  .check-item.checked .check-text {
+    text-decoration: line-through;
+    color: var(--grey-mid);
+  }
+
+  .check-text {
+    font-size: 13px;
+    line-height: 1.5;
+    color: var(--grey-dark);
+  }
+
+  .checklist-progress {
+    margin-top: 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .cl-progress-label {
+    font-size: 11px;
+    color: var(--grey-mid);
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .cl-progress-track {
+    height: 5px;
+    background: var(--grey-border);
+    border-radius: 3px;
+    overflow: hidden;
+  }
+
+  .cl-progress-fill {
+    height: 100%;
+    background: var(--green-ok);
+    border-radius: 3px;
+    transition: width 0.3s ease;
+  }
+
+  /* NAVIGATION BUTTONS */
+  .step-footer {
+    padding: 20px 32px;
+    border-top: 1px solid var(--grey-border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: var(--grey-light);
+  }
+
+  .btn-nav {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 24px;
+    border-radius: 3px;
+    font-family: var(--font-display);
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.2s;
+    border: none;
+  }
+
+  .btn-prev {
+    background: white;
+    color: var(--blue-primary);
+    border: 1px solid var(--blue-primary);
+  }
+
+  .btn-prev:hover {
+    background: var(--blue-light);
+  }
+
+  .btn-next {
+    background: var(--blue-primary);
+    color: white;
+  }
+
+  .btn-next:hover {
+    background: var(--blue-dark);
+    transform: translateX(2px);
+  }
+
+  .btn-nav:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+    transform: none !important;
+  }
+
+  .step-counter {
+    font-family: var(--font-display);
+    font-size: 13px;
+    color: var(--grey-mid);
+    font-weight: 500;
+  }
+
+  /* SUMMARY SCREEN */
+  .summary-screen {
+    animation: fadeIn 0.4s ease;
+  }
+
+  .summary-header {
+    background: var(--blue-dark);
+    color: white;
+    padding: 40px 32px;
+    text-align: center;
+    border-radius: 6px 6px 0 0;
+  }
+
+  .summary-header h2 {
+    font-family: var(--font-display);
+    font-size: 32px;
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+
+  .summary-header p {
+    font-size: 15px;
+    color: rgba(255,255,255,0.7);
+  }
+
+  .summary-body {
+    background: white;
+    padding: 32px;
+    border-radius: 0 0 6px 6px;
+  }
+
+  .summary-section {
+    margin-bottom: 32px;
+  }
+
+  .summary-section-title {
+    font-family: var(--font-display);
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--blue-primary);
+    border-bottom: 2px solid var(--blue-light);
+    padding-bottom: 8px;
+    margin-bottom: 16px;
+  }
+
+  .summary-steps-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+  }
+
+  .summary-step-card {
+    border: 1px solid var(--grey-border);
+    border-top: 3px solid var(--blue-primary);
+    padding: 14px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .summary-step-card:hover {
+    box-shadow: 0 4px 12px rgba(0,87,168,0.15);
+    transform: translateY(-2px);
+  }
+
+  .summary-step-card .s-num {
+    font-family: var(--font-display);
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--blue-primary);
+    opacity: 0.4;
+  }
+
+  .summary-step-card .s-name {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--grey-dark);
+    line-height: 1.4;
+    margin-top: 4px;
+  }
+
+  .data-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  .data-table td {
+    padding: 10px 14px;
+    font-size: 14px;
+    border-bottom: 1px solid var(--grey-border);
+  }
+
+  .data-table tr:last-child td { border-bottom: none; }
+
+  .data-table td:first-child {
+    font-weight: 600;
+    color: var(--grey-mid);
+    width: 55%;
+    font-size: 13px;
+  }
+
+  .data-table td:last-child {
+    font-family: var(--font-display);
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--blue-primary);
+  }
+
+  .warning-summary-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .warning-summary-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 10px 14px;
+    border-radius: 3px;
+    font-size: 13px;
+    line-height: 1.5;
+  }
+
+  .warning-summary-item.w { background: var(--red-light); color: var(--red-warning); }
+  .warning-summary-item.c { background: var(--orange-light); color: var(--orange-caution); }
+
+  .btn-restart {
+    background: var(--blue-primary);
+    color: white;
+    border: none;
+    font-family: var(--font-display);
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    padding: 12px 32px;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: all 0.2s;
+    margin-top: 24px;
+  }
+
+  .btn-restart:hover { background: var(--blue-dark); }
+
+  /* HIDDEN */
+  .hidden { display: none !important; }
+
+  @media (max-width: 768px) {
+    .step-body { grid-template-columns: 1fr; }
+    .intro-stats { grid-template-columns: 1fr; }
+    .summary-steps-grid { grid-template-columns: repeat(2, 1fr); }
+    .main { padding: 16px 16px 60px; }
+    .header-inner { padding: 12px 16px; }
+    .step-body { padding: 20px; }
+    .step-header { padding: 20px; }
+    .intro-title { font-size: 32px; }
+    .progress-track { width: 120px; }
+  }
+</style>
+</head>
+<body>
+
+<header class="header">
+  <div class="header-inner">
+    <div class="header-brand">
+      <span class="system">TFN-ADVANCED™ Proximal Femoral Nailing System</span>
+      <span class="title">Técnica de Augmentación con TRAUMACEM V+</span>
+    </div>
+    <div class="progress-bar-container">
+      <span class="progress-label" id="progressLabel">Introducción</span>
+      <div class="progress-track">
+        <div class="progress-fill" id="progressFill" style="width:0%"></div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- STEP NAV -->
+<div class="step-nav hidden" id="stepNav">
+  <div class="step-nav-inner" id="stepNavInner"></div>
+</div>
+
+<main class="main">
+
+  <!-- INTRO -->
+  <div id="introScreen" class="intro-screen">
+    <span class="intro-badge">Guía Interactiva · Técnica Quirúrgica</span>
+    <h1 class="intro-title">Augmentación con<br>Cemento PMMA</h1>
+    <p class="intro-subtitle">Guía paso a paso del procedimiento de augmentación con TRAUMACEM V+ Injectable Bone Cement en el sistema TFN-ADVANCED™</p>
+
+    <!-- AUTOR -->
+    <div style="display:inline-flex; align-items:center; gap:14px; background:white; border:1px solid var(--grey-border); border-left:4px solid var(--blue-primary); border-radius:4px; padding:14px 24px; margin-bottom:28px;">
+      <div style="width:42px; height:42px; background:var(--blue-primary); border-radius:50%; display:flex; align-items:center; justify-content:center; flex-shrink:0;">
+        <span style="font-family:var(--font-display); font-size:18px; font-weight:700; color:white;">L</span>
+      </div>
+      <div style="text-align:left;">
+        <div style="font-family:var(--font-display); font-size:16px; font-weight:700; color:var(--blue-dark); letter-spacing:0.3px;">Dr. Larrainzar</div>
+        <div style="font-size:12px; color:var(--grey-mid); margin-top:2px;">Jefe de Servicio · Cirugía Ortopédica y Traumatología</div>
+        <div style="font-size:11px; color:var(--blue-primary); margin-top:2px; font-weight:600;">Hospital Universitario Infanta Leonor</div>
+      </div>
+    </div>
+
+    <div class="intro-stats">
+      <div class="intro-stat">
+        <span class="number">8</span>
+        <span class="label">Pasos del procedimiento</span>
+      </div>
+      <div class="intro-stat">
+        <span class="number">3 ml</span>
+        <span class="label">Cemento recomendado</span>
+      </div>
+      <div class="intro-stat">
+        <span class="number">27 min</span>
+        <span class="label">Tiempo de trabajo (20°C)</span>
+      </div>
+    </div>
+    <button class="btn-start" onclick="startGuide()">▶ Comenzar la Guía</button>
+
+    <!-- DISCLAIMER -->
+    <div style="margin-top:28px; background:#FEF3E8; border:1px solid #F5D0A9; border-left:4px solid var(--orange-caution); border-radius:4px; padding:14px 20px; text-align:left; max-width:560px; margin-left:auto; margin-right:auto;">
+      <div style="font-family:var(--font-display); font-size:11px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase; color:var(--orange-caution); margin-bottom:6px;">⚠ Aviso Legal · Uso Docente</div>
+      <p style="font-size:12px; color:var(--grey-dark); line-height:1.7;">Este material ha sido elaborado con fines <strong>exclusivamente docentes</strong> para su uso en sesiones de formación médica. No sustituye en ningún caso la documentación oficial, las instrucciones de uso ni el material técnico propio de DePuy Synthes / Johnson &amp; Johnson. Para información clínica vinculante, consúltese siempre la técnica quirúrgica oficial del fabricante.</p>
+    </div>
+  </div>
+
+  <!-- STEP CONTENT -->
+  <div id="stepScreen" class="hidden">
+    <div class="step-card" id="stepCard"></div>
+  </div>
+
+  <!-- SUMMARY -->
+  <div id="summaryScreen" class="hidden summary-screen">
+    <div class="step-card summary-screen">
+      <div class="summary-header">
+        <h2>Resumen del Procedimiento</h2>
+        <p>Datos clave y advertencias críticas de la técnica de augmentación</p>
+      </div>
+      <div class="summary-body">
+
+        <div class="summary-section">
+          <div class="summary-section-title">Los 8 Pasos</div>
+          <div class="summary-steps-grid" id="summaryStepsGrid"></div>
+        </div>
+
+        <div class="summary-section">
+          <div class="summary-section-title">Datos Clave del Procedimiento</div>
+          <table class="data-table">
+            <tr><td>Volumen recomendado de cemento</td><td>3 ml</td></tr>
+            <tr><td>Volumen máximo de cemento</td><td>6 ml</td></tr>
+            <tr><td>Distancia mínima a superficie articular</td><td>6–10 mm</td></tr>
+            <tr><td>Tiempo de trabajo a 20°C (ambiente)</td><td>~27 minutos</td></tr>
+            <tr><td>Tiempo de fraguado a 37°C (corporal)</td><td>15 minutos</td></tr>
+            <tr><td>Inmovilidad del paciente post-inyección</td><td>15 minutos</td></tr>
+            <tr><td>Contraste radiográfico previo</td><td>~4 ml</td></tr>
+            <tr><td>Pre-llenado de la cánula</td><td>4 ml (2 jeringas de 2ml)</td></tr>
+            <tr><td>Jeringa para inyección final</td><td>1 ml (azul)</td></tr>
+            <tr><td>Ajuste por vuelta completa de manga</td><td>5 mm</td></tr>
+          </table>
+        </div>
+
+        <div class="summary-section">
+          <div class="summary-section-title">Advertencias Críticas</div>
+          <div class="warning-summary-list">
+            <div class="warning-summary-item w">⚠ NO augmentar si el contraste radiográfico fuga hacia la articulación</div>
+            <div class="warning-summary-item w">⚠ Detener la inyección inmediatamente ante fuga al espacio articular, gap de fractura o sistema venoso</div>
+            <div class="warning-summary-item w">⚠ La distancia mínima de 6 mm a la superficie articular reduce el riesgo de lesión térmica del cartílago</div>
+            <div class="warning-summary-item c">▲ No avanzar la cánula más de 5 mm sobre la longitud del elemento cefálico seleccionado</div>
+            <div class="warning-summary-item c">▲ Usar siempre las cantidades completas de monómero y polímero del kit</div>
+            <div class="warning-summary-item c">▲ El paciente debe permanecer inmóvil 15 minutos tras la última inyección</div>
+          </div>
+        </div>
+
+        <div style="text-align:center">
+          <button class="btn-restart" onclick="restartGuide()">↺ Volver al inicio</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<script>
+const steps = [
+  {
+    title: "Ajustar la cánula de inyección",
+    instruments: [
+      { ref: "03.702.121S", name: "TRAUMACEM V+ Injection Cannula, para sistema TFNA, estéril" }
+    ],
+    description: "Ajuste la manga de la cánula de inyección a la longitud del elemento cefálico seleccionado. Los ajustes de longitud se realizan girando la cánula de inyección mientras se sujeta la manga.",
+    keyData: [],
+    checklist: [
+      "Seleccionar la longitud correcta del elemento cefálico",
+      "Girar la cánula sujetando la manga para ajustar",
+      "Verificar que la longitud coincide con la del implante"
+    ],
+    warnings: [
+      { type: "note", title: "Nota importante", text: "Se recomiendan 3 ml de cemento. La cantidad inyectada no debe exceder 6 ml. El cemento PMMA debe mantener una distancia de 6–10 mm a la superficie articular." },
+      { type: "caution", title: "Precaución", text: "Tiempo de trabajo a 20°C: ~27 min. Tiempo de fraguado a 37°C: 15 min. El paciente debe permanecer inmóvil 15 min tras la última inyección." }
+    ]
+  },
+  {
+    title: "Verificar posible fuga de cemento a la articulación",
+    instruments: [
+      { ref: "03.702.121S", name: "TRAUMACEM V+ Injection Cannula, para sistema TFNA, estéril" },
+      { ref: "Adicional", name: "1-2 jeringas (6-10 ml) con Luer lock, agente de contraste radiográfico, solución salina" }
+    ],
+    description: "Conectar la jeringa con Luer lock a la cánula y precargarla con ~4 ml de agente de contraste. Insertar la cánula a través de la manga guía hasta el tope. Verificar bajo intensificación de imagen que la cánula está completamente insertada. La punta de la manga debe desaparecer en el extremo lateral del blade/tornillo.",
+    keyData: [
+      { value: "4", unit: "ml", label: "Contraste previo" }
+    ],
+    checklist: [
+      "Precargar la cánula con ~4 ml de contraste radiográfico",
+      "Insertar la cánula a través de la manga guía hasta el tope",
+      "Verificar longitud seleccionada coincide con el implante",
+      "Confirmar bajo fluoroscopía que la cánula está completamente insertada",
+      "Verificar que la punta de la manga ha desaparecido en el blade/tornillo",
+      "Inyectar contraste en la cabeza femoral y monitorizar bajo fluoroscopía",
+      "Retirar la cánula",
+      "Lavar el contraste con solución salina si es necesario"
+    ],
+    warnings: [
+      { type: "warning", title: "⚠ ADVERTENCIA CRÍTICA", text: "NO augmentar si el contraste fuga hacia la articulación. Detener el procedimiento inmediatamente." },
+      { type: "caution", title: "Precaución", text: "Usar únicamente agentes de contraste indicados para esta aplicación. Consultar las instrucciones del fabricante." }
+    ]
+  },
+  {
+    title: "Preparar el cemento",
+    instruments: [
+      { ref: "07.702.040S", name: "TRAUMACEM V+ Bone Cement, injectable, estéril" }
+    ],
+    description: "Sostener el mezclador en posición vertical y golpear suavemente en la parte superior para asegurar que no haya polvo adherido. Tirar del émbolo hasta retraerlo completamente. Abrir la ampolla de vidrio y verter todo el monómero sobre el polvo de cemento. Cerrar herméticamente con la tapa de transferencia. Mezclar moviendo el émbolo azul de tope a tope ~20 veces. Los primeros movimientos deben ser lentos con movimientos oscilantes. Retraer completamente el émbolo tras la mezcla.",
+    keyData: [
+      { value: "20", unit: "x", label: "Ciclos de mezcla" }
+    ],
+    checklist: [
+      "Sostener mezclador vertical y golpear suavemente para separar polvo",
+      "Retraer completamente el émbolo",
+      "Abrir la ampolla y verter TODO el monómero sobre el polvo",
+      "Cerrar herméticamente con la tapa de transferencia",
+      "Mezclar ~20 veces de tope a tope",
+      "Primeros movimientos lentos y oscilantes",
+      "Retraer completamente el émbolo tras la mezcla"
+    ],
+    warnings: [
+      { type: "note", title: "Nota", text: "Durante la preparación, sostener siempre el mezclador por la parte azul inferior, nunca por la parte transparente — el calor corporal puede acortar el tiempo de trabajo." },
+      { type: "caution", title: "Precaución", text: "Usar siempre las cantidades completas de monómero y polímero del kit. No está permitido usar solo uno de los componentes." },
+      { type: "caution", title: "Precaución", text: "Asegurar que el polvo y el líquido están completamente mezclados antes de iniciar la transferencia." }
+    ]
+  },
+  {
+    title: "Cargar las jeringas de inyección",
+    instruments: [
+      { ref: "03.702.150S", name: "TRAUMACEM V+ Syringe Kit, 4×1 mL, 2×2 mL, estéril" }
+    ],
+    description: "Retirar el tapón transparente de la tapa del mezclador. Conectar el stopcock (lado sin embudo) al mezclador asegurando un ajuste hermético. Primero eliminar el aire del sistema: con la válvula abierta, girar suavemente el émbolo en sentido horario hasta que el cemento sea visible en el stopcock. Cerrar la válvula. Conectar la jeringa de 2 ml (blanca) al lado embudo del stopcock. Llenar cada jeringa girando el émbolo en sentido horario. Cerrar el stopcock al llenarse cada jeringa. Rellenar todas las jeringas de 1 ml (azules) y 2 ml (blancas).",
+    keyData: [
+      { value: "4", unit: "×1ml", label: "Jeringas azules" },
+      { value: "2", unit: "×2ml", label: "Jeringas blancas" }
+    ],
+    checklist: [
+      "Retirar el tapón transparente de la tapa del mezclador",
+      "Conectar el stopcock (lado sin embudo) al mezclador",
+      "Purgar el aire con la válvula abierta hasta ver cemento en el stopcock",
+      "Cerrar la válvula",
+      "Conectar jeringa de 2 ml al lado embudo",
+      "Llenar cada jeringa girando el émbolo en sentido horario",
+      "Llenar las 2 jeringas de 2 ml (blancas)",
+      "Llenar las 4 jeringas de 1 ml (azules)",
+      "Evitar derrames de cemento durante la transferencia"
+    ],
+    warnings: [
+      { type: "note", title: "Nota", text: "No empujar para transferir el cemento — girar el émbolo del mezclador. Ambas piezas son de plástico; evitar fuerza excesiva al acoplarlas." }
+    ]
+  },
+  {
+    title: "Pre-llenar la cánula de inyección",
+    instruments: [
+      { ref: "03.702.121S", name: "TRAUMACEM V+ Injection Cannula, para sistema TFNA, estéril" }
+    ],
+    description: "Conectar una jeringa de 2 ml llena a la cánula y pre-llenarla. Conectar una segunda jeringa de 2 ml y continuar llenando hasta que el cemento salga por la apertura lateral — esto representa 4 ml de cemento en la cánula. Retirar y descartar las jeringas. Conectar una jeringa de 1 ml llena para preparar la augmentación.",
+    keyData: [
+      { value: "4", unit: "ml", label: "Pre-llenado cánula" }
+    ],
+    checklist: [
+      "Conectar 1ª jeringa de 2 ml a la cánula",
+      "Pre-llenar la cánula con los 2 ml",
+      "Conectar 2ª jeringa de 2 ml",
+      "Llenar hasta que el cemento salga por la apertura lateral (= 4 ml)",
+      "Retirar y descartar las jeringas de 2 ml",
+      "Conectar jeringa de 1 ml para la augmentación",
+      "Limpiar cualquier exceso de cemento"
+    ],
+    warnings: [
+      { type: "note", title: "Nota clave sobre jeringas", text: "Las jeringas de 1 ml DEBEN usarse para inyectar el cemento en la cabeza femoral. Las de 2 ml NO son adecuadas para la augmentación. Se recomienda empezar con las de 2 ml para el pre-llenado y usar las de 1 ml después, ya que la fuerza necesaria aumenta con el tiempo." }
+    ]
+  },
+  {
+    title: "Insertar la cánula de inyección",
+    instruments: [
+      { ref: "03.702.121S", name: "TRAUMACEM V+ Injection Cannula, para sistema TFNA, estéril" }
+    ],
+    description: "Confirmar que la longitud seleccionada en la cánula corresponde con la longitud del blade/tornillo. Insertar la cánula a través de la manga guía hasta el tope. Verificar bajo intensificación de imagen que la cánula está completamente insertada.",
+    keyData: [],
+    checklist: [
+      "Confirmar longitud de la cánula igual a la del blade/tornillo",
+      "Insertar la cánula a través de la manga guía hasta el tope",
+      "Verificar inserción completa bajo fluoroscopía",
+      "Monitorizar posición de la manga durante todo el procedimiento"
+    ],
+    warnings: [
+      { type: "caution", title: "Precaución", text: "Monitorizar continuamente la posición correcta de la manga durante todo el procedimiento. La punta de la manga debe estar desaparecida en el extremo lateral del blade/tornillo." }
+    ]
+  },
+  {
+    title: "Augmentación con TRAUMACEM V+",
+    instruments: [
+      { ref: "03.702.121S", name: "TRAUMACEM V+ Injection Cannula, para sistema TFNA, estéril" }
+    ],
+    description: "Inyectar lentamente el cemento usando jeringas de 1 ml. Optimizar el relleno rotando el émbolo para inyectar alrededor del blade/tornillo y más medial o lateralmente. Una vuelta completa de la manga equivale a un ajuste de 5 mm. Monitorizar continuamente el flujo de cemento bajo fluoroscopía. Si aumenta la viscosidad, puede continuarse con el émbolo (~3 ml adicionales disponibles en la cánula).",
+    keyData: [
+      { value: "3", unit: "ml", label: "Cemento recomendado" },
+      { value: "6", unit: "ml", label: "Máximo absoluto" },
+      { value: "5 mm", unit: "/vuelta", label: "Ajuste de manga" }
+    ],
+    checklist: [
+      "Inyectar lentamente con jeringas de 1 ml",
+      "Monitorizar el flujo bajo fluoroscopía continuamente",
+      "Optimizar el relleno rotando el émbolo",
+      "Verificar distancia mínima de 6-10 mm a la superficie articular",
+      "Vigilar presencia de fuga articular, gap o sistema venoso",
+      "No avanzar la cánula más de 5 mm sobre la longitud del implante"
+    ],
+    warnings: [
+      { type: "warning", title: "⚠ ADVERTENCIA", text: "La distancia mínima de 6 mm a la superficie articular es obligatoria para reducir el riesgo de lesión térmica del cartílago adyacente." },
+      { type: "warning", title: "⚠ ADVERTENCIA CRÍTICA", text: "Detener la inyección inmediatamente si hay riesgo de fuga al espacio articular, gap de fractura o sistema venoso." },
+      { type: "caution", title: "Precaución", text: "No avanzar la cánula más de 5 mm sobre la longitud del elemento cefálico seleccionado. Aumenta el riesgo de penetración y fuga de cemento." }
+    ]
+  },
+  {
+    title: "Retirar la cánula de inyección",
+    instruments: [],
+    description: "Presionar el dispositivo de bloqueo en el brazo de puntería para retirar el conjunto cánula/manga guía. Retirar la cánula tan pronto como la inyección esté completa y el cemento todavía sea maleable.",
+    keyData: [
+      { value: "15", unit: "min", label: "Inmovilidad post-inyección" }
+    ],
+    checklist: [
+      "Completar la inyección de cemento",
+      "Retirar la cánula mientras el cemento aún es maleable",
+      "Presionar el dispositivo de bloqueo en el brazo de puntería",
+      "Retirar el conjunto cánula/manga guía",
+      "Mantener al paciente inmóvil 15 minutos para el fraguado"
+    ],
+    warnings: [
+      { type: "caution", title: "Precaución crítica de tiempo", text: "El paciente debe permanecer inmóvil durante 15 minutos tras la última inyección para facilitar el correcto fraguado del cemento a temperatura corporal." }
+    ]
+  }
+];
+
+const stepNames = [
+  "Ajustar cánula",
+  "Verificar fuga",
+  "Preparar cemento",
+  "Cargar jeringas",
+  "Pre-llenar cánula",
+  "Insertar cánula",
+  "Augmentación",
+  "Retirar cánula"
+];
+
+let currentStep = 0;
+let checkStates = {};
+
+function startGuide() {
+  document.getElementById('introScreen').classList.add('hidden');
+  document.getElementById('stepNav').classList.remove('hidden');
+  document.getElementById('stepScreen').classList.remove('hidden');
+  buildStepNav();
+  renderStep(0);
+}
+
+function buildStepNav() {
+  const nav = document.getElementById('stepNavInner');
+  nav.innerHTML = '';
+  steps.forEach((s, i) => {
+    const pill = document.createElement('div');
+    pill.className = 'step-pill';
+    pill.id = `nav-pill-${i}`;
+    pill.innerHTML = `<span class="pill-num">${i+1}</span>${stepNames[i]}`;
+    pill.onclick = () => goToStep(i);
+    nav.appendChild(pill);
+  });
+}
+
+function updateNav(idx) {
+  steps.forEach((_, i) => {
+    const pill = document.getElementById(`nav-pill-${i}`);
+    if (!pill) return;
+    pill.className = 'step-pill';
+    if (i < idx) pill.classList.add('completed');
+    if (i === idx) pill.classList.add('active');
+  });
+  // scroll nav to active
+  const activePill = document.getElementById(`nav-pill-${idx}`);
+  if (activePill) activePill.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+}
+
+function updateProgress(idx) {
+  const pct = Math.round(((idx + 1) / steps.length) * 100);
+  document.getElementById('progressFill').style.width = pct + '%';
+  document.getElementById('progressLabel').textContent = `Paso ${idx + 1} de ${steps.length}`;
+}
+
+function getChecks(stepIdx) {
+  if (!checkStates[stepIdx]) {
+    checkStates[stepIdx] = steps[stepIdx].checklist.map(() => false);
+  }
+  return checkStates[stepIdx];
+}
+
+function toggleCheck(stepIdx, itemIdx) {
+  getChecks(stepIdx)[itemIdx] = !getChecks(stepIdx)[itemIdx];
+  updateChecklistUI(stepIdx);
+}
+
+function updateChecklistUI(stepIdx) {
+  const checks = getChecks(stepIdx);
+  const done = checks.filter(Boolean).length;
+  const total = checks.length;
+
+  checks.forEach((checked, i) => {
+    const item = document.getElementById(`check-${stepIdx}-${i}`);
+    if (item) {
+      item.className = checked ? 'check-item checked' : 'check-item';
+    }
+  });
+
+  const fill = document.getElementById(`cl-fill-${stepIdx}`);
+  const label = document.getElementById(`cl-label-${stepIdx}`);
+  if (fill) fill.style.width = (done / total * 100) + '%';
+  if (label) label.innerHTML = `<span>Completado</span><span>${done}/${total}</span>`;
+}
+
+function renderStep(idx) {
+  currentStep = idx;
+  const s = steps[idx];
+  const checks = getChecks(idx);
+  const card = document.getElementById('stepCard');
+
+  // instruments HTML
+  let instrHTML = '';
+  if (s.instruments.length > 0) {
+    instrHTML = `<div class="instruments-card">
+      <div class="card-label">🔧 Instrumentos</div>
+      ${s.instruments.map(inst => `
+        <div class="instrument-item">
+          <span class="instrument-ref">${inst.ref}</span>
+          <span class="instrument-name">${inst.name}</span>
+        </div>`).join('')}
+    </div>`;
+  }
+
+  // key data HTML
+  let keyDataHTML = '';
+  if (s.keyData.length > 0) {
+    keyDataHTML = `<div class="key-data-grid">
+      ${s.keyData.map(kd => `
+        <div class="key-data-item">
+          <span class="kd-value">${kd.value}</span>
+          <span class="kd-unit">${kd.unit}</span>
+          <span class="kd-label">${kd.label}</span>
+        </div>`).join('')}
+    </div>`;
+  }
+
+  // warnings HTML
+  const warnHTML = s.warnings.map(w => `
+    <div class="alert-card ${w.type}">
+      <span class="alert-icon">${w.type === 'warning' ? '⛔' : w.type === 'caution' ? '⚠️' : '📋'}</span>
+      <div class="alert-content">
+        <div class="alert-title">${w.title}</div>
+        <p>${w.text}</p>
+      </div>
+    </div>`).join('');
+
+  // checklist HTML
+  const checklistHTML = `
+    <div class="checklist-section">
+      <div class="checklist-title">✓ Checklist del Paso</div>
+      ${checks.map((checked, i) => `
+        <div class="check-item ${checked ? 'checked' : ''}" id="check-${idx}-${i}" onclick="toggleCheck(${idx}, ${i})">
+          <div class="check-box"></div>
+          <span class="check-text">${s.checklist[i]}</span>
+        </div>`).join('')}
+      <div class="checklist-progress">
+        <div class="cl-progress-label" id="cl-label-${idx}">
+          <span>Completado</span>
+          <span>${checks.filter(Boolean).length}/${checks.length}</span>
+        </div>
+        <div class="cl-progress-track">
+          <div class="cl-progress-fill" id="cl-fill-${idx}" style="width:${checks.filter(Boolean).length / checks.length * 100}%"></div>
+        </div>
+      </div>
+    </div>`;
+
+  const isLastStep = idx === steps.length - 1;
+
+  card.innerHTML = `
+    <div class="step-header">
+      <div class="step-number">${String(idx + 1).padStart(2, '0')}</div>
+      <div class="step-title-block">
+        <div class="step-label">Paso ${idx + 1} de ${steps.length}</div>
+        <div class="step-name">${s.title}</div>
+      </div>
+    </div>
+    <div class="step-body">
+      <div class="step-left">
+        ${instrHTML}
+        ${keyDataHTML}
+        <p class="step-description">${s.description}</p>
+        ${warnHTML}
+      </div>
+      <div class="step-right">
+        ${checklistHTML}
+      </div>
+    </div>
+    <div class="step-footer">
+      <button class="btn-nav btn-prev" onclick="goToStep(${idx - 1})" ${idx === 0 ? 'disabled' : ''}>
+        ← Anterior
+      </button>
+      <span class="step-counter">${idx + 1} / ${steps.length}</span>
+      <button class="btn-nav btn-next" onclick="${isLastStep ? 'showSummary()' : `goToStep(${idx + 1})`}">
+        ${isLastStep ? 'Ver Resumen →' : 'Siguiente →'}
+      </button>
+    </div>`;
+
+  updateNav(idx);
+  updateProgress(idx);
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function goToStep(idx) {
+  if (idx < 0 || idx >= steps.length) return;
+  renderStep(idx);
+}
+
+function showSummary() {
+  document.getElementById('stepScreen').classList.add('hidden');
+  document.getElementById('summaryScreen').classList.remove('hidden');
+  document.getElementById('progressFill').style.width = '100%';
+  document.getElementById('progressLabel').textContent = 'Resumen completo';
+
+  // Build summary steps grid
+  const grid = document.getElementById('summaryStepsGrid');
+  grid.innerHTML = steps.map((s, i) => `
+    <div class="summary-step-card" onclick="goToStepFromSummary(${i})">
+      <div class="s-num">${String(i+1).padStart(2,'0')}</div>
+      <div class="s-name">${s.title}</div>
+    </div>`).join('');
+
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function goToStepFromSummary(idx) {
+  document.getElementById('summaryScreen').classList.add('hidden');
+  document.getElementById('stepScreen').classList.remove('hidden');
+  renderStep(idx);
+}
+
+function restartGuide() {
+  checkStates = {};
+  currentStep = 0;
+  document.getElementById('summaryScreen').classList.add('hidden');
+  document.getElementById('stepScreen').classList.add('hidden');
+  document.getElementById('stepNav').classList.add('hidden');
+  document.getElementById('introScreen').classList.remove('hidden');
+  document.getElementById('progressFill').style.width = '0%';
+  document.getElementById('progressLabel').textContent = 'Introducción';
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+</script>
+</body>
+</html>
